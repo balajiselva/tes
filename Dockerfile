@@ -1,4 +1,5 @@
-FROM ghcr.io/puppeteer/puppeteer:24.0.0
+# Add the --platform flag to ensure compatibility
+FROM --platform=linux/amd64 ghcr.io/puppeteer/puppeteer:24.0.0
 
 # Create app directory
 WORKDIR /app
@@ -7,12 +8,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+# Using 'ci' is often better for Docker to ensure clean, reproducible installs
+RUN npm ci
 
 # Copy the rest of your code
 COPY . .
 
-# Expose port (Render will override)
+# Expose port
 EXPOSE 7000
 
 # Start your addon
